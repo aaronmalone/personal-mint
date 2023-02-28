@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'personal-mint'
-include('app')
+include('account-activity')
