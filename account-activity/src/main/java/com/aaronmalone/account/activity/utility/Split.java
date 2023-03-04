@@ -1,7 +1,6 @@
 package com.aaronmalone.account.activity.utility;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Split {
 
@@ -9,7 +8,7 @@ public class Split {
         // utility class
     }
 
-    public static List<String> split(final String line) {
+    public static String[] split(final String line) {
         final ArrayList<String> result = new ArrayList<>();
 
         StringBuilder current = new StringBuilder();
@@ -27,7 +26,7 @@ public class Split {
         }
         result.add(current.toString());
 
-        return result;
+        return result.toArray(new String[0]);
     }
 
     private static boolean isQuoteCharacter(char c) {

@@ -3,6 +3,9 @@ package com.aaronmalone.account.activity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import static com.aaronmalone.account.activity.utility.Dates.MONTH_DAY_YEAR_FORMAT;
+import static com.aaronmalone.account.activity.utility.Split.split;
+
 class BankTransaction {
 
     final String line;
@@ -25,5 +28,19 @@ class BankTransaction {
         this.bankCategory = bankCategory;
         this.bankType = bankType;
         this.memo = memo;
+    }
+
+    static BankTransaction fromChaseCard(String line) {
+        String[] array = split(line);
+        return new BankTransaction(
+                line,
+                LocalDate.parse(array[1], MONTH_DAY_YEAR_FORMAT), // post date
+                LocalDate.parse(array[0], MONTH_DAY_YEAR_FORMAT), // transaction date
+                new BigDecimal(array[5]), // amount
+                array[2],                 // description
+                array[3],                 // category
+                array[4],                 // type
+                array[6]                  // memo
+        );
     }
 }
