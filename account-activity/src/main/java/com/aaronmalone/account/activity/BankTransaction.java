@@ -66,4 +66,31 @@ class BankTransaction {
                 array[6]
         );
     }
+
+    public static BankTransaction fromCapitalOneCard(String line) {
+        String[] array = split(line);
+
+        // Note: index 2 is card number
+
+        BigDecimal debit = amountOrZero(array[5]);
+        BigDecimal credit = amountOrZero(array[6]);
+
+        return new BankTransaction(
+                line,
+                LocalDate.parse(array[1]),
+                LocalDate.parse(array[0]),
+                credit.subtract(debit),
+                array[3],
+                array[4],
+                "",
+                ""
+        );
+    }
+
+    private static BigDecimal amountOrZero(String s) {
+        if (s == null || s.isEmpty()) {
+            return BigDecimal.ZERO;
+        }
+        return new BigDecimal(s.trim());
+    }
 }

@@ -54,4 +54,33 @@ class BankTransactionTest {
         assertEquals("", transaction.memo);
     }
 
+    @Test
+    void testFromCapitalOneCardWithDebit() {
+        String line = "2023-02-12,2023-02-13,7197,DROPBOX,Internet,11.99,";
+        BankTransaction transaction = BankTransaction.fromCapitalOneCard(line);
+
+        assertEquals(line, transaction.line);
+        assertEquals(LocalDate.parse("2023-02-13"), transaction.postDate);
+        assertEquals(LocalDate.parse("2023-02-12"), transaction.transactionDate);
+        assertEquals(BigDecimal.valueOf(-1199, 2), transaction.amount);
+        assertEquals("DROPBOX", transaction.description);
+        assertEquals("Internet", transaction.bankCategory);
+        assertEquals("", transaction.bankType);
+        assertEquals("", transaction.memo);
+    }
+
+    void testFromCapitalOneCardWithCredit() {
+        String line = "2023-01-29,2023-01-30,7197,CAPITAL ONE ONLINE PYMT,Payment/Credit,,27.48";
+        BankTransaction transaction = BankTransaction.fromCapitalOneCard(line);
+
+        assertEquals(line, transaction.line);
+        assertEquals(LocalDate.parse("2023-01-30"), transaction.postDate);
+        assertEquals(LocalDate.parse("2023-01-29"), transaction.transactionDate);
+        assertEquals(BigDecimal.valueOf(2748, 2), transaction.amount);
+        assertEquals("CAPITAL ONE ONLINE PYMT", transaction.description);
+        assertEquals("Payment/Credit", transaction.bankCategory);
+        assertEquals("", transaction.bankType);
+        assertEquals("", transaction.memo);
+    }
+
 }
