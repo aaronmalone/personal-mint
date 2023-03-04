@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static com.aaronmalone.account.activity.utility.Dates.MONTH_DAY_YEAR_FORMAT;
+import static com.aaronmalone.account.activity.utility.Dates.determineTransactionDate;
 import static com.aaronmalone.account.activity.utility.Split.split;
 
 class BankTransaction {
@@ -41,6 +42,28 @@ class BankTransaction {
                 array[3],                 // category
                 array[4],                 // type
                 array[6]                  // memo
+        );
+    }
+
+    static BankTransaction fromChaseBankAccount(String line) {
+        String[] array = split(line);
+
+        // NOTE:
+        //   index 0 has 'Details' column (CREDIT, DEBIT, CHECK, etc.)
+        //   index 5 has bank balance
+
+        LocalDate postDate = LocalDate.parse(array[1], MONTH_DAY_YEAR_FORMAT);
+        String description = array[2];
+        LocalDate transactionDate = determineTransactionDate(description, postDate);
+        return new BankTransaction(
+                line,
+                postDate,
+                transactionDate,
+                new BigDecimal(array[3]),
+                description,
+                "",
+                array[4],
+                array[6]
         );
     }
 }
