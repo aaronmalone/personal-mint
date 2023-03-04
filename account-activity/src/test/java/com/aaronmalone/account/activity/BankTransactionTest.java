@@ -39,4 +39,19 @@ class BankTransactionTest {
         assertEquals("", transaction.memo);
     }
 
+    @Test
+    void testFromChaseCardWithTransactionDate() {
+        String line = "CREDIT,01/02/2019,Merry Christmas 12/25,500.00,ACCT_XFER,12500.00,,";
+        BankTransaction transaction = BankTransaction.fromChaseBankAccount(line);
+
+        assertEquals(line, transaction.line);
+        assertEquals(LocalDate.parse("2019-01-02"), transaction.postDate);
+        assertEquals(LocalDate.parse("2018-12-25"), transaction.transactionDate);
+        assertEquals(BigDecimal.valueOf(50000, 2), transaction.amount);
+        assertEquals("Merry Christmas 12/25", transaction.description);
+        assertEquals("", transaction.bankCategory);
+        assertEquals("ACCT_XFER", transaction.bankType);
+        assertEquals("", transaction.memo);
+    }
+
 }
