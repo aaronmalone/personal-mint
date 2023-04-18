@@ -31,10 +31,12 @@ class StringCharSequence implements CharSequence {
 
     @Override
     public String toString() {
-        return new String(str.toCharArray(), offset, length);
+        return str.substring(offset, offset + length);
     }
 
     public BigDecimal toBigDecimal() {
-        return new BigDecimal(str.toCharArray(), offset, length);
+        char[] chars = new char[length];
+        str.getChars(offset, offset + length, chars, 0);
+        return new BigDecimal(chars, 0, length);
     }
 }
