@@ -8,6 +8,10 @@ public class Amounts {
         if (chars == null || chars.length() == 0) {
             return BigDecimal.ZERO;
         }
-        return new BigDecimal(chars.toString().trim());
+        if (chars instanceof StringCharSequence) {
+            return ((StringCharSequence) chars).toBigDecimal();
+        } else {
+            return new BigDecimal(chars.toString().trim());
+        }
     }
 }
