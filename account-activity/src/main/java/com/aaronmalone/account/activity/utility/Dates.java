@@ -18,10 +18,10 @@ public class Dates {
             .appendValue(YEAR)
             .toFormatter();
 
-    public static LocalDate determineTransactionDate(String description, LocalDate postDate) {
+    public static LocalDate determineTransactionDate(CharSequence description, LocalDate postDate) {
         int length = description.length();
         if (description.charAt(length - 3) == '/') {
-            String datePart = description.substring(length - 5, length);
+            String datePart = description.subSequence(length - 5, length).toString();
             int month = getMonth(datePart);
             int day = getDay(datePart);
             LocalDate dateToCheck;

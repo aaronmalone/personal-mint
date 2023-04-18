@@ -3,6 +3,7 @@ package com.aaronmalone.account.activity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import static com.aaronmalone.account.activity.utility.Amounts.amountOrZero;
 import static com.aaronmalone.account.activity.utility.Dates.MONTH_DAY_YEAR_FORMAT;
 import static com.aaronmalone.account.activity.utility.Dates.determineTransactionDate;
 import static com.aaronmalone.account.activity.utility.Split.split;
@@ -32,12 +33,12 @@ class BankTransaction {
     }
 
     static BankTransaction fromChaseCard(String line) {
-        String[] array = split(line);
+        CharSequence[] array = split(line);
         return new BankTransaction(
                 line,
                 LocalDate.parse(array[1], MONTH_DAY_YEAR_FORMAT), // post date
                 LocalDate.parse(array[0], MONTH_DAY_YEAR_FORMAT), // transaction date
-                new BigDecimal(array[5]), // amount
+                amountOrZero(array[5]),   // amount
                 array[2],                 // description
                 array[3],                 // category
                 array[4],                 // type
@@ -46,20 +47,20 @@ class BankTransaction {
     }
 
     static BankTransaction fromChaseBankAccount(String line) {
-        String[] array = split(line);
+        CharSequence[] array = split(line);
 
         // NOTE:
         //   index 0 has 'Details' column (CREDIT, DEBIT, CHECK, etc.)
         //   index 5 has bank balance
 
         LocalDate postDate = LocalDate.parse(array[1], MONTH_DAY_YEAR_FORMAT);
-        String description = array[2];
+        CharSequence description = array[2];
         LocalDate transactionDate = determineTransactionDate(description, postDate);
         return new BankTransaction(
                 line,
                 postDate,
                 transactionDate,
-                new BigDecimal(array[3]),
+                amountOrZero(array[3]),
                 description,
                 "",
                 array[4],
@@ -68,7 +69,7 @@ class BankTransaction {
     }
 
     public static BankTransaction fromCapitalOneCard(String line) {
-        String[] array = split(line);
+        CharSequence[] array = split(line);
 
         // Note: index 2 is card number
 
@@ -85,12 +86,5 @@ class BankTransaction {
                 "",
                 ""
         );
-    }
-
-    private static BigDecimal amountOrZero(CharSequence s) {
-        if (s == null || s.isEmpty()) {
-            return BigDecimal.ZERO;
-        }
-        return new BigDecimal(s.toString().trim());
     }
 }

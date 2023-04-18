@@ -1,11 +1,10 @@
 package com.aaronmalone.account.activity;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BankTransactionTest {
 
@@ -81,6 +80,11 @@ class BankTransactionTest {
         assertEquals("Payment/Credit", transaction.bankCategory);
         assertEquals("", transaction.bankType);
         assertEquals("", transaction.memo);
+    }
+
+    private void assertEquals(Object expected, Object actual) {
+        boolean isStringCharSeqComparison = expected instanceof String && actual instanceof CharSequence;
+        Assertions.assertEquals(expected, isStringCharSeqComparison ? actual.toString() : actual);
     }
 
 }
