@@ -9,18 +9,18 @@ import static com.aaronmalone.account.activity.utility.Split.split;
 
 class BankTransaction {
 
-    final String line;
+    final CharSequence line;
     final LocalDate postDate;
     final LocalDate transactionDate;
     final BigDecimal amount;
-    final String description;
-    final String bankCategory;
-    final String bankType;
-    final String memo;
+    final CharSequence description;
+    final CharSequence bankCategory;
+    final CharSequence bankType;
+    final CharSequence memo;
 
-    public BankTransaction(String line, LocalDate postDate, LocalDate transactionDate,
-                           BigDecimal amount, String description, String bankCategory,
-                           String bankType, String memo) {
+    public BankTransaction(CharSequence line, LocalDate postDate, LocalDate transactionDate,
+                           BigDecimal amount, CharSequence description, CharSequence bankCategory,
+                           CharSequence bankType, CharSequence memo) {
         this.line = line;
         this.postDate = postDate;
         this.transactionDate = transactionDate;
@@ -87,10 +87,10 @@ class BankTransaction {
         );
     }
 
-    private static BigDecimal amountOrZero(String s) {
+    private static BigDecimal amountOrZero(CharSequence s) {
         if (s == null || s.isEmpty()) {
             return BigDecimal.ZERO;
         }
-        return new BigDecimal(s.trim());
+        return new BigDecimal(s.toString().trim());
     }
 }
